@@ -1,0 +1,31 @@
+{
+  "name": "cordova-plugin-datamax",
+  "version": "1.0.0",
+  "description": "Citizen Blutooth Printer",
+  "cordova": {
+    "id": "cordova-plugin-datamax",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vishnuraj910/cordova-plugin-datamax"
+  },
+  "keywords": [
+    "cordova",
+   "bluetooth",
+   "printer",
+   "citizen",
+    "cordova-android"
+  ],
+  "scripts": {
+    "test": "npm run jshint",
+    "jshint": "jshint www && jshint src && jshint tests"
+  },
+  "author": "Apache Software Foundation",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  }
+}
