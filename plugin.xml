@@ -18,9 +18,7 @@
   under the License.
 -->
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-plugin-datamax"
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-datamax"
     version="1.0.0">
 
     <name>Datamax Thermal Printer</name>
@@ -35,21 +33,23 @@
         <merges target="navigator" />
     </js-module>
 
-   
+
 
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Bluetoothconnection">
-                <param name="android-package" value="org.apache.cordova.bluetooth.Bluetoothconnection"/>
+                <param name="android-package" value="org.apache.cordova.bluetooth.Bluetoothconnection" />
             </feature>
         </config-file>
 
         <source-file src="src/android/Bluetoothconnection.java" target-dir="src/org/apache/cordova/bluetooth" />
-		<resource-file src="src/android/DO_AndroidSDK_v2.4.9.aar" target="libs" />
+        <source-file src="src/android/AlertView.java" target-dir="src/org/apache/cordova/bluetooth" />
+        <source-file src="src/android/R.java" target-dir="src/org/apache/cordova/bluetooth" />
+        <resource-file src="src/android/DO_AndroidSDK_v2.4.9.aar" target="libs" />
         <config-file target="AndroidManifest.xml" parent="/manifest">
-            <uses-permission android:name="android.permission.BLUETOOTH"/>
-            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
         </config-file>
         <lib-file src="src/android/DO_AndroidSDK_v2.4.9.aar" />
     </platform>
