@@ -2,90 +2,34 @@
 package org.apache.cordova.bluetooth;
 
 
-import org.apache.cordova.CordovaArgs;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.LOG;
-import org.apache.cordova.PluginResult;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
-
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.app.ProgressDialog;
-
-import android.R;
-import android.content.Context;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.Vector;
 import java.util.Set;
 import java.util.UUID;
-import android.content.res.AssetManager;
+import java.util.Vector;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Bitmap.Config;
-import android.util.Xml.Encoding;
-import android.util.Base64;
-import java.util.ArrayList;
-import java.util.List;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
-
-import android.graphics.Typeface;
 import honeywell.connection.ConnectionBase;
-import honeywell.connection.Connection_Bluetooth;
-import honeywell.connection.Connection_TCP;
-import honeywell.printer.DocumentDPL;
-import honeywell.printer.DocumentDPL.*;
-import honeywell.printer.DocumentEZ;
-import honeywell.printer.DocumentLP;
 import honeywell.printer.DocumentExPCL_LP;
-import honeywell.printer.DocumentExPCL_PP;
-import honeywell.printer.DocumentExPCL_PP.*;
-import honeywell.printer.ParametersDPL;
-import honeywell.printer.ParametersDPL.*;
-import honeywell.printer.ParametersEZ;
-import honeywell.printer.ParametersExPCL_LP;
-import honeywell.printer.ParametersExPCL_LP.*;
-import honeywell.printer.ParametersExPCL_PP;
-import honeywell.printer.ParametersExPCL_PP.*;
-import honeywell.printer.UPSMessage;
-import honeywell.printer.configuration.dpl.*;
-import honeywell.printer.configuration.ez.*;
-import honeywell.printer.configuration.expcl.*;
 
 public class Bluetoothconnection extends CordovaPlugin {
 
@@ -371,9 +315,9 @@ public class Bluetoothconnection extends CordovaPlugin {
 			String str1 = args.getString(1);
 			Context context = this.cordova.getActivity().getApplicationContext();
 
-			Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/img_logo.jpg"));
+			Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/dologo.png"));
 
-			docExPCL_LP.writeImage(decodedBitmap, 384);
+			docExPCL_LP.writeImage(decodedBitmap, 576);
 			printData = docExPCL_LP.getDocumentData();
 
 			btoutputstream.write(printData);
