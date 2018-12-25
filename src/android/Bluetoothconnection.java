@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import java.util.UUID;
 import java.util.Vector;
 
 import honeywell.connection.ConnectionBase;
+import honeywell.connection.Connection_Bluetooth;
 import honeywell.printer.DocumentExPCL_LP;
 
 public class Bluetoothconnection extends CordovaPlugin {
@@ -69,14 +71,15 @@ public class Bluetoothconnection extends CordovaPlugin {
 	}
 
 	@Override
-	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+	public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
 
 		if (mBluetoothAdapter == null) {
 			mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 			bluetoothSetup(callbackContext);
 		}
-
+		conn = null;
+		docExPCL_LP = new DocumentExPCL_LP(3);
 		if (action.equals("printWithText")) {
 			String errMsg = null;
 			boolean secure = true;
@@ -88,7 +91,7 @@ public class Bluetoothconnection extends CordovaPlugin {
 					{
 						try
 						{
-							if(mmSocket != null) {
+							if(conn != null) {
 								Log.e(LOG_TAG,"Getting to printing function");
 								printText(args, callbackContext); //Taking the prin of the text
 							}
@@ -125,37 +128,61 @@ public class Bluetoothconnection extends CordovaPlugin {
 			return true;
 		}
 		else if (action.equals("printWithLogo")) {
+
 			String errMsg = null;
 			boolean secure = true;
 			if(listBondedDevices(callbackContext)) //getting paired device
 			{
 				try
 				{
-					if(connect(callbackContext)) //connecting to the paired device
-					{
-						try
-						{
-							if(mmSocket != null) {
+
+
 								Log.e(LOG_TAG,"Getting to printing function");
-								printWithLogo(args, callbackContext); //Taking the prin of the text
-							}
+								cordova.getThreadPool().execute(new Runnable() {
+									@Override
+									public void run() {
+										// printWithLogo(args, callbackContext); //Taking the prin of the text
+										try {
 
-						}
-						catch(Exception e)
-						{
-							// Bluetooth Address Format [OO:OO:OO:OO:OO:OO]
-							errMsg = e.getMessage();
-							Log.e(LOG_TAG, errMsg);
-							e.printStackTrace();
-							callbackContext.error("Error message" + errMsg);
-						}
+											// TODO Auto-generated method stub
+											macAddress=macAddress.replace(" ", "");
+											Log.e(LOG_TAG,"macaddress in connect" + macAddress );
+											// BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(macAddress);
+											if (Looper.myLooper() == null)
+											{
+												Looper.prepare();
+											}
+											conn = Connection_Bluetooth.createClient(macAddress);
+											conn.open();
+											printData = new byte[]{0};
+											String str = args.getString(0);
+											Context context = cordova.getActivity().getApplicationContext();
 
-					}
-					else
-					{
-						callbackContext.error("Could not connect to " + devicename);
-						return true;
-					}
+											Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/dcl.png"));
+											docExPCL_LP.writeImage(decodedBitmap, 756);
+											printData = docExPCL_LP.getDocumentData();
+
+											String msg = str.toString();
+
+											msg += "\n";
+
+											conn.write(printData);
+											conn.write(msg.getBytes());
+											Thread.sleep(2000);
+											conn.close();
+											Log.e(LOG_TAG,"Printing success");
+											Toast.makeText(cordova.getActivity(), "Successfully printed", Toast.LENGTH_LONG).show();
+											callbackContext.success("Printed Successfuly : ");
+
+										} catch (Exception e) {
+											Log.e(LOG_TAG,"Printing error" + e.getMessage());
+											e.printStackTrace();
+											callbackContext.error("Some error occured new " + e.getMessage());
+										}
+									}
+								});
+
+
 				}
 				catch (Exception e) {
 					errMsg = e.getMessage();
@@ -173,6 +200,7 @@ public class Bluetoothconnection extends CordovaPlugin {
 
 		}
 		return false;
+
 	}
 
 	public void bluetoothSetup(CallbackContext callbackContext)
@@ -234,25 +262,29 @@ public class Bluetoothconnection extends CordovaPlugin {
 		{
 			macAddress=macAddress.replace(" ", "");
 			Log.e(LOG_TAG,"macaddress in connect" + macAddress );
-			BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(macAddress);
+			// BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(macAddress);
 
-			if (device != null) {
+			conn = Connection_Bluetooth.createClient(macAddress);
+			conn.open();
+			// if (device != null) {
 
-				if((connectionTask != null) && (connectionTask.getStatus() == AsyncTask.Status.RUNNING))
-				{
-					connectionTask.cancel(true);
-					if(!connectionTask.isCancelled())
-						connectionTask.cancel(true);
-					connectionTask = null;
-					return false;
-				}
+			// 	if((connectionTask != null) && (connectionTask.getStatus() == AsyncTask.Status.RUNNING))
+			// 	{
+			// 		connectionTask.cancel(true);
+			// 		if(!connectionTask.isCancelled())
+			// 			connectionTask.cancel(true);
+			// 		connectionTask = null;
+			// 		return false;
+			// 	}
 
-				mConnectThread = new ConnectThread(device);
-				mConnectThread.start();
+			// 	mConnectThread = new ConnectThread(device);
+			// 	mConnectThread.start();
 
-				Log.e(TAG, "connect to: " + device);
-				return true;
-			}
+			// 	Log.e(TAG, "connect to: " + device);
+			// 	return true;
+			// }
+
+			return true;
 		}
 		catch(Exception e)
 		{
@@ -290,7 +322,7 @@ public class Bluetoothconnection extends CordovaPlugin {
 			btoutputstream.flush();
 
 			Log.e(LOG_TAG,"Printing success");
-//			mmSocket.close();
+			// mmSocket.close();
 			Toast.makeText(this.cordova.getActivity(), "Successfully printed", Toast.LENGTH_LONG).show();
 			callbackContext.success("Printed Successfuly : ");
 			return true;
@@ -305,45 +337,7 @@ public class Bluetoothconnection extends CordovaPlugin {
 	}
 
 	boolean printWithLogo(JSONArray  args, CallbackContext callbackContext) {
-		try {
 
-			// TODO Auto-generated method stub
-
-			btoutputstream = mmSocket.getOutputStream();
-			printData = new byte[]{0};
-			String str = args.getString(0);
-			String str1 = args.getString(1);
-			Context context = this.cordova.getActivity().getApplicationContext();
-
-			Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/dologo.png"));
-
-			docExPCL_LP.writeImage(decodedBitmap, 576);
-			printData = docExPCL_LP.getDocumentData();
-
-			btoutputstream.write(printData);
-
-			String newline = "\n";
-
-			String msg = str.toString();
-
-			msg += "\n";
-
-			btoutputstream.write(msg.getBytes());
-			btoutputstream.flush();
-
-			Log.e(LOG_TAG,"Printing success");
-//            mmSocket.close();
-			Toast.makeText(this.cordova.getActivity(), "Successfully printed", Toast.LENGTH_LONG).show();
-			callbackContext.success("Printed Successfuly : ");
-
-			return true;
-
-
-		} catch (Exception e) {
-			Log.e(LOG_TAG,"Printing error" + e.getMessage());
-			e.printStackTrace();
-			callbackContext.error("Some error occured new " + e.getMessage());
-		}
 
 		return false;
 	}
