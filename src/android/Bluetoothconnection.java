@@ -158,8 +158,9 @@ public class Bluetoothconnection extends CordovaPlugin {
 											String str = args.getString(0);
 											Context context = cordova.getActivity().getApplicationContext();
 
-											Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/dcl.png"));
+											Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/dcl_print.png"));
 											docExPCL_LP.writeImage(decodedBitmap, 756);
+											docExPCL_LP.setDefaultFontIndex(6);
 											printData = docExPCL_LP.getDocumentData();
 
 											String msg = str.toString();
