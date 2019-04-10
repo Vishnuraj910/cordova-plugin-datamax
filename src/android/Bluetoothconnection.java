@@ -157,18 +157,25 @@ public class Bluetoothconnection extends CordovaPlugin {
 											printData = new byte[]{0};
 											String str = args.getString(0);
 											Context context = cordova.getActivity().getApplicationContext();
-
-											Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/dcl_print.png"));
-											docExPCL_LP.writeImage(decodedBitmap, 756);
-											docExPCL_LP.setDefaultFontIndex(6);
-											printData = docExPCL_LP.getDocumentData();
-
 											String msg = str.toString();
 
 											msg += "\n";
+											Bitmap decodedBitmap = BitmapFactory.decodeStream(context.getAssets().open("www/img/dcl_print.png"));
+											docExPCL_LP.writeImage(decodedBitmap, 756);
+											docExPCL_LP.setDefaultFontIndex(8);
+											docExPCL_LP.writeText(msg);
+											// docExPCL_LP.writeText("Message wit 8 - 7987987 HEY");
+//											 docExPCL_LP.setLineSpacing((byte) 30);
+//											docExPCL_LP.writeText("Message wit 8 - (byte) 30 7987987 HEY"+ docExPCL_LP.getDefaultFont());
+//											docExPCL_LP.setLineSpacing((byte) 100);
+//											docExPCL_LP.writeText("Message wit 8 - 100 - 7987987 HEY");
+
+											printData = docExPCL_LP.getDocumentData();
+
+
 
 											conn.write(printData);
-											conn.write(msg.getBytes());
+											// conn.write(msg.getBytes());
 											Thread.sleep(2000);
 											conn.close();
 											Log.e(LOG_TAG,"Printing success");
