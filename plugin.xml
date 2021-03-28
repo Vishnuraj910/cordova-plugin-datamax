@@ -44,8 +44,8 @@
         </config-file>
 
         <source-file src="src/android/Bluetoothconnection.java" target-dir="src/org/apache/cordova/bluetooth" />
-        <source-file src="src/android/AlertView.java" target-dir="src/org/apache/cordova/bluetooth" />
-        <source-file src="src/android/R.java" target-dir="src/org/apache/cordova/bluetooth" />
+        <!-- <source-file src="src/android/AlertView.java" target-dir="src/org/apache/cordova/bluetooth" />
+        <source-file src="src/android/R.java" target-dir="src/org/apache/cordova/bluetooth" /> -->
         <resource-file src="src/android/DO_AndroidSDK_v2.4.9.aar" target="libs" />
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.BLUETOOTH" />
