@@ -1,5 +1,5 @@
 
-package org.apache.cordova.bluetooth;
+package com.datamax.sysdxb;
 
 
 import android.app.ProgressDialog;
