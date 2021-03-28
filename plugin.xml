@@ -29,8 +29,9 @@
     <issue></issue>
 
     <js-module src="www/ble-printer.js" name="blePrinter">
-        <merges target="navigator.blePrinter" />
-        <merges target="navigator" />
+        <clobbers target="navigator.blePrinter" />
+        <!-- <merges target="navigator.blePrinter" />
+        <merges target="navigator" /> -->
     </js-module>
 
 
