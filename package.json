@@ -16,7 +16,7 @@
     "cordova",
    "bluetooth",
    "printer",
-   "citizen",
+   "datamax",
     "cordova-android"
   ],
   "scripts": {
