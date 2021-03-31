@@ -18,44 +18,53 @@
   under the License.
 -->
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-datamax"
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-datamax"
     version="1.0.0">
 
     <name>Datamax Thermal Printer</name>
     <description>Cordova Datamax Thermal Blutooth Printer Plugin</description>
     <license>Apache 2.0</license>
+    <author>Vishnuraj Rajagopal</author>
     <keywords>cordova,bluetooth,printer</keywords>
     <repo>https://github.com/Vishnuraj910/cordova-plugin-datamax.git</repo>
     <issue></issue>
 
+    <engines>
+        <engine name="cordova-android" version=">=6.3.0" />
+    </engines>
+
     <js-module src="www/ble-printer.js" name="blePrinter">
-        <!-- <clobbers target="navigator.blePrinter" /> -->
-        <merges target="navigator.blePrinter" />
+        <clobbers target="navigator.blePrinter" />
+        <!-- <merges target="navigator.blePrinter" /> -->
         <!-- <merges target="navigator" /> -->
     </js-module>
 
     <!-- android -->
     <platform name="android">
-        <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="Bluetoothconnection">
-                <param name="android-package" value="org.apache.cordova.bluetooth.Bluetoothconnection" />
-            </feature>
-        </config-file>
-
-        <source-file src="src/android/Bluetoothconnection.java" target-dir="src/org/apache/cordova/bluetooth" />
-        <source-file src="src/android/AlertView.java" target-dir="src/org/apache/cordova/bluetooth" />
-        <source-file src="src/android/R.java" target-dir="src/org/apache/cordova/bluetooth" />
-        <resource-file src="src/android/DO_AndroidSDK_v2.4.9.aar" target="libs" />
-        <config-file target="AndroidManifest.xml" parent="/manifest">
+    
+        <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.BLUETOOTH" />
             <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
         </config-file>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="BluetoothConnection">
+                <param name="android-package" value="org.apache.cordova.bluetooth.BluetoothConnection" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/BluetoothConnection.java" target-dir="src/org/apache/cordova/bluetooth/" />
+        
+        <resource-file src="src/android/DO_AndroidSDK_v2.4.9.aar" target="libs/DO_AndroidSDK_v2.4.9.aar" />
+        <framework src="src/android/DO_AndroidSDK_v2.4.9.gradle" custom="true" type="gradleReference" />       
+        
         <lib-file src="src/android/DO_AndroidSDK_v2.4.9.aar" />
     </platform>
+
     <platform name="browser">
        <js-module src="www/ble-printer.js" name="blePrinter">
-        <merges target="navigator.blePrinter" />
-    </js-module>
+            <merges target="navigator.blePrinter" />
+        </js-module>
     </platform>
 
 </plugin>
