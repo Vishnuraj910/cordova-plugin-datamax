@@ -33,13 +33,13 @@ import honeywell.connection.ConnectionBase;
 import honeywell.connection.Connection_Bluetooth;
 import honeywell.printer.DocumentExPCL_LP;
 
-public class Bluetoothconnection extends CordovaPlugin {
+public class BluetoothConnection extends CordovaPlugin {
 
 	private static final String LIST = "list";
 	private static final String CONNECT = "connect";
 	private static final int REQUEST_ENABLE_BT = 2;
 	private static final String LOG_TAG = "BluetoothPrinter";
-	private static final String TAG = "Bluetoothconnection";
+	private static final String TAG = "BluetoothConnection";
 	public static final int LENGTH_SHORT = 0;
 
 	private BluetoothAdapter mBluetoothAdapter;
@@ -65,7 +65,7 @@ public class Bluetoothconnection extends CordovaPlugin {
 	String macAddress;
 	String devicename;
 
-	public Bluetoothconnection()
+	public BluetoothConnection()
 	{
 		docExPCL_LP = new DocumentExPCL_LP(3);
 	}
