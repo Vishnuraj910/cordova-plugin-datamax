@@ -29,10 +29,10 @@ var exec = require('cordova/exec');
 module.exports = {
    
     printWithText: function (strdata, success, failure) {
-            exec(success, failure, "Bluetoothconnection", "printWithText", [strdata]);
+            exec(success, failure, "BluetoothConnection", "printWithText", [strdata]);
         },
      printWithLogo: function (strdata,imgFile, success, failure) {
-             exec(success, failure, "Bluetoothconnection", "printWithLogo", [strdata,imgFile]);
+             exec(success, failure, "BluetoothConnection", "printWithLogo", [strdata,imgFile]);
         }
 };
 
