@@ -48,7 +48,7 @@
         </config-file>
 
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="BluetoothoCnnection">
+            <feature name="BluetoothConnection">
                 <param name="android-package" value="org.apache.cordova.bluetooth.BluetoothConnection" />
             </feature>
         </config-file>
