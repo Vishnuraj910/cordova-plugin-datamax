@@ -56,7 +56,7 @@
         <source-file src="src/android/BluetoothConnection.java" target-dir="src/org/apache/cordova/bluetooth/" />
         
         <resource-file src="src/android/DO_AndroidSDK_v2.4.9.aar" target="libs/DO_AndroidSDK_v2.4.9.aar" />
-        <framework src="DO_AndroidSDK_v2.4.9.gradle" custom="true" type="gradleReference" />       
+        <framework src="src/android/DO_AndroidSDK_v2.4.9.gradle" custom="true" type="gradleReference" />       
         
         <lib-file src="src/android/DO_AndroidSDK_v2.4.9.aar" />
     </platform>
